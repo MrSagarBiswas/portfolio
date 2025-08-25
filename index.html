@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sagar Biswas - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Base styles for dark mode */
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e2e8f0;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --tag-bg: #334155;
+            --tag-text: #94a3b8;
+            --header-bg: rgba(10, 10, 10, 0.5);
+            --header-bg-scrolled: rgba(10, 10, 10, 0.85);
+            --timeline-line: rgba(56, 189, 248, 0.3);
+            --timeline-dot-border: #1e293b;
+        }
+
+        /* Styles for light mode */
+        html.light {
+            --bg-color: #f1f5f9;
+            --text-color: #111827;
+            --card-bg: #ffffff;
+            --border-color: #cbd5e1;
+            --tag-bg: #e2e8f0;
+            --tag-text: #111827;
+            --header-bg: rgba(241, 245, 249, 0.5);
+            --header-bg-scrolled: rgba(241, 245, 249, 0.85);
+            --timeline-line: rgba(59, 130, 246, 0.3);
+            --timeline-dot-border: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            cursor: none; /* Hide default cursor */
+        }
+        
+        /* Interactive background canvas */
+        #interactive-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* Custom cursor follower */
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(56, 189, 248, 0.2);
+            border: 2px solid #38bdf8;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #818cf8;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        body:hover .cursor-follower { opacity: 1; }
+        a:hover ~ .cursor-follower, button:hover ~ .cursor-follower {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+        
+        /* Card hover glow effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: var(--mouse-y, 0);
+            left: var(--mouse-x, 0);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15) 0%, transparent 60%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .tag {
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .tag:hover {
+            background-color: #38bdf8;
+            color: #fff;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        section {
+            opacity: 0;
+            transition: opacity 0.8s ease-out;
+        }
+        header {
+            background-color: var(--header-bg) !important;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+        }
+        header.scrolled {
+            background-color: var(--header-bg-scrolled) !important;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        header.scrolled nav {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        .timeline-line {
+            border-color: var(--timeline-line);
+        }
+        .timeline-dot {
+            border-color: var(--timeline-dot-border);
+            transition: transform 0.3s ease;
+        }
+        .relative:hover .timeline-dot {
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Interactive Background -->
+    <canvas id="interactive-bg"></canvas>
+
+    <!-- Header -->
+    <header class="fixed w-full backdrop-blur-sm z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-300">
+            <a href="#" class="text-2xl font-bold gradient-text">Sagar Biswas</a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">About</a>
+                <a href="#projects" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">Projects</a>
+                <a href="#skills" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">Skills</a>
+                <a href="#experience" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">Experience</a>
+                <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg transition-all">Contact</a>
+                <button id="theme-toggle" class="text-black dark:text-slate-300 hover:text-sky-500 text-xl">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-500 dark:text-slate-300">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#about" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">About</a>
+            <a href="#projects" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">Projects</a>
+            <a href="#skills" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">Skills</a>
+            <a href="#experience" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">Experience</a>
+            <a href="#contact" class="block mt-2 bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg text-center">Contact</a>
+            <button id="mobile-theme-toggle" class="w-full mt-2 py-2 text-black dark:text-slate-300 hover:text-sky-500 text-xl rounded-lg bg-slate-200 dark:bg-slate-700">
+                Toggle Theme
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 pt-24 relative z-10">
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center text-center">
+            <div class="max-w-4xl">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4">
+                    Hi, I'm <span class="gradient-text">Sagar Biswas</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-900 dark:text-slate-400 mb-8 font-semibold">
+                    A Computer Science Engineer from West Bengal, India, specializing in high-performance computing, distributed systems, and full-stack web development. I am currently pursuing my M.Tech in CSE at IIT Madras, where I am deepening my expertise in scalable and performance-driven computing systems.
+                </p>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="https://www.linkedin.com/in/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-instagram"></i></a>
+                    <a href="https://leetcode.com/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fas fa-code"></i></a>
+                    <a href="mailto:biswassagar927@gmail.com" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fas fa-envelope"></i></a>
+                </div>
+                 <a href="https://drive.google.com/file/d/10od5VyA81sR64MRicabrMFgKKsCVIFbs/view?usp=sharing" target="_blank" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20">
+                    View My Resume
+                </a>
+            </div>
+        </section>
+
+        <!-- About Me & Education -->
+        <section id="about" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">About Me</h2>
+            <div class="grid md:grid-cols-5 gap-12 items-center">
+                <div class="md:col-span-2">
+                     <img src="sagar_biswas.png" alt="Sagar Biswas" class="rounded-full mx-auto shadow-lg w-64 h-64 md:w-80 md:h-80 object-cover border-4 border-sky-500/50">
+                </div>
+                <div class="md:col-span-3">
+                    <p class="text-lg text-gray-900 dark:text-slate-400 mb-6 font-semibold">
+                        I am a passionate and driven Computer Science & Engineering Student from IIT Madras. My primary interests lie in building robust, scalable systems, from multicore runtime environments to decentralized applications. I have a strong foundation in algorithms, data structures, and parallel programming, with hands-on experience in GPU acceleration using CUDA.
+                    </p>
+                    <p class="text-lg text-gray-900 dark:text-slate-400 font-semibold">
+                        Beyond systems programming, I'm also a proficient full-stack developer, having built complete web applications like an E-Health Management System using the MERN stack. I thrive on solving complex problems and am always eager to learn and apply new technologies.
+                    </p>
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-slate-200">Education</h3>
+                        <div class="space-y-4">
+                            <div class="card p-4 rounded-lg">
+                                <p class="font-bold text-sky-700 dark:text-sky-400">M.Tech in Computer Science & Engineering</p>
+                                <p class="text-gray-800 dark:text-slate-300">Indian Institute of Technology, Madras</p>
+                                <p class="text-sm text-gray-700 dark:text-slate-400">2024 – 2026 | CGPA: 8.4</p>
+                            </div>
+                            <div class="card p-4 rounded-lg">
+                                <p class="font-bold text-sky-700 dark:text-sky-400">B.Tech in Computer Science & Engineering</p>
+                                <p class="text-gray-800 dark:text-slate-300">University of Allahabad</p>
+                                <p class="text-sm text-gray-700 dark:text-slate-400">2020 – 2024 | CGPA: 8.5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Projects -->
+        <section id="projects" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Key Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Cards -->
+                <div class="card rounded-lg p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">Multicore Garbage Collector</h3>
+                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Designing a high-performance runtime subsystem to automatically reclaim memory and resource leaks in concurrent OCaml programs.</p>
+                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">C</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">OCaml</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Runtime Systems</span></div>
+                    <a href="#" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
+                </div>
+                <div class="card rounded-lg p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">E-Health Management System</h3>
+                    <p class="text-slate-600 dark:text-slate-400 flex-grow">An end-to-end platform for patient onboarding, appointment booking, billing, and medical record access.</p>
+                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">ReactJS</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">NodeJS</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">MongoDB</span></div>
+                     <a href="https://e-health-management-system.netlify.app/" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">Live Website &rarr;</a>
+                </div>
+                <div class="card rounded-lg p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">GPU-Accelerated Image Processing</h3>
+                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Designed multi-channel image transformation kernels in CUDA, achieving a 16x speedup over a sequential CPU implementation.</p>
+                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">CUDA</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">GPU Programming</span></div>
+                     <a href="https://github.com/MrSagarBiswas/2D-Convolution-using-CUDA" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
+                </div>
+                <div class="card rounded-lg p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">Parallel MST using CUDA</h3>
+                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Implemented a parallel Minimum Spanning Tree algorithm based on Boruvka's approach, achieving a 12x speedup.</p>
+                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">CUDA</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Algorithms</span></div>
+                     <a href="https://github.com/MrSagarBiswas/Parallel-Minimum-Spanning-Tree-using-CUDA" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
+                </div>
+                <div class="card rounded-lg p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">Decentralized Petitioning System</h3>
+                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Architected a decentralized petitioning and polling platform on Hedera Hashgraph using Solidity smart contracts.</p>
+                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Solidity</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Blockchain</span></div>
+                     <a href="https://petition-polling-dapp.netlify.app/" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">Live Website &rarr;</a>
+                </div>
+                <div class="card rounded-lg p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">iNaturalist Image Classification</h3>
+                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Fine-tuned a ResNet50 model, achieving 87.9% test accuracy using transfer learning and advanced training techniques.</p>
+                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Deep Learning</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">PyTorch</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">CNN</span></div>
+                     <a href="https://github.com/MrSagarBiswas/CNN-on-iNaturalist-12K" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skills -->
+        <section id="skills" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Technical Skills</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200">Programming</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">C</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">C++</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">CUDA</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">SQL</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Solidity</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">OCaml</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">JavaScript</span>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200">Libraries/Frameworks</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Pandas</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">NumPy</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">React.js</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Express.js</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">jQuery</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200">Tools</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Git</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Google Colab</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Postman</span>
+                        <span class="tag text-lg font-medium px-4 py-2 rounded-lg">MongoDB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section id="experience" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Experience</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="relative border-l-2 timeline-line pl-10 space-y-12">
+                     <div class="relative">
+                        <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
+                        <p class="text-sm text-sky-500 dark:text-sky-400">July 2025 - Nov 2025</p>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Teaching Assistant</h3>
+                        <p class="text-md text-slate-600 dark:text-slate-400">IIT Madras</p>
+                        <p class="mt-2 text-slate-600 dark:text-slate-400">Teaching Assistant for Paradigms of Programming (CS3100)</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
+                        <p class="text-sm text-sky-500 dark:text-sky-400">Jan 2025 - May 2025</p>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Teaching Assistant</h3>
+                        <p class="text-md text-slate-600 dark:text-slate-400">IIT Madras</p>
+                        <p class="mt-2 text-slate-600 dark:text-slate-400">Teaching Assistant for Introduction to Programming Lab (CS1100)</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
+                        <p class="text-sm text-sky-500 dark:text-sky-400">July 2024 - Nov 2024</p>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Teaching Assistant</h3>
+                        <p class="text-md text-slate-600 dark:text-slate-400">IIT Madras</p>
+                        <p class="mt-2 text-slate-600 dark:text-slate-400">Teaching Assistant for Programming and Data Structures Lab (CS2710)</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
+                        <p class="text-sm text-sky-500 dark:text-sky-400">May 2022 - Jan 2024</p>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Club Head at E-Code</h3>
+                        <p class="text-md text-slate-600 dark:text-slate-400">University of Allahabad</p>
+                        <p class="mt-2 text-slate-600 dark:text-slate-400">Organized programming competitions and weekly coding sessions, mentoring over 200 students in DSA.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="py-20 text-center">
+            <h2 class="text-4xl font-bold mb-4 gradient-text">Get In Touch</h2>
+            <p class="max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-400 mb-8">
+                I'm currently seeking opportunities for internships and full-time roles. If you have a project in mind, want to connect, or just want to say hi, feel free to reach out!
+            </p>
+            <a href="mailto:biswassagar927@gmail.com" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/30">
+                Say Hello
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-6 py-6 text-center text-slate-500 dark:text-slate-400">
+            <p>&copy; 2025 Sagar Biswas. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- THEME TOGGLE ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+            const themeIcon = themeToggleBtn.querySelector('i');
+            const html = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'light') {
+                    html.classList.add('light');
+                    html.classList.remove('dark');
+                    if (themeIcon) themeIcon.className = 'fas fa-moon';
+                } else {
+                    html.classList.add('dark');
+                    html.classList.remove('light');
+                    if (themeIcon) themeIcon.className = 'fas fa-sun';
+                }
+            };
+            
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(savedTheme);
+
+            const toggleTheme = () => {
+                const newTheme = html.classList.contains('light') ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            };
+
+            themeToggleBtn.addEventListener('click', toggleTheme);
+            mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+
+            // --- MOBILE MENU ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // --- HEADER SCROLL EFFECT ---
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- FADE-IN ANIMATION ON SCROLL ---
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => observer.observe(section));
+
+            // --- SMOOTH CURSOR FOLLOWER ---
+            const dot = document.querySelector('.cursor-dot');
+            const follower = document.querySelector('.cursor-follower');
+            
+            let dotX = 0, dotY = 0;
+            let followerX = 0, followerY = 0;
+            let targetX = 0, targetY = 0;
+            const ease = 0.1;
+
+            window.addEventListener('mousemove', (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            });
+
+            function animateCursor() {
+                // Animate dot
+                dotX = targetX;
+                dotY = targetY;
+                dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0)`;
+                
+                // Animate follower with lerp
+                followerX += (targetX - followerX) * ease;
+                followerY += (targetY - followerY) * ease;
+                follower.style.transform = `translate3d(${followerX - 20}px, ${followerY - 20}px, 0)`;
+
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // --- CARD HOVER GLOW ---
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+
+
+            // --- INTERACTIVE BACKGROUND CANVAS ---
+            const canvas = document.getElementById('interactive-bg');
+            const ctx = canvas.getContext('2d');
+            let particlesArray;
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const mouse = { x: null, y: null, radius: (canvas.height/100) * (canvas.width/100) };
+
+            window.addEventListener('mousemove', (event) => {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            });
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size) {
+                    this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    const color = html.classList.contains('light') ? 'rgba(59, 130, 246, 0.4)' : 'rgba(56, 189, 248, 0.4)';
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                    
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 1;
+                        if (mouse.x > this.x && this.x > this.size * 10) this.x -= 1;
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 1;
+                        if (mouse.y > this.y && this.y > this.size * 10) this.y -= 1;
+                    }
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 12000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 3) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * 0.4) - 0.2;
+                    let directionY = (Math.random() * 0.4) - 0.2;
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size));
+                }
+            }
+
+            function connect() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                                     + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        if (distance < (canvas.width/7) * (canvas.height/7)) {
+                            opacityValue = 1 - (distance/20000);
+                            const lineColor = html.classList.contains('light') ? `rgba(59, 130, 246, ${opacityValue})` : `rgba(129, 140, 248, ${opacityValue})`;
+                            ctx.strokeStyle = lineColor;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+                connect();
+            }
+
+            init();
+            animate();
+
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                mouse.radius = (canvas.height/100) * (canvas.width/100);
+                init();
+            });
+        });
+    </script>
+</body>
+</html>
