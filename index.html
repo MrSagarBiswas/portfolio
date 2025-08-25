@@ -39,6 +39,8 @@
         :root {
             --bg-color: #0a0a0a;
             --text-color: #e2e8f0;
+            --text-color-secondary: #ced8e7;
+            --text-color-muted: #64748b;
             --card-bg: #1e293b;
             --border-color: #334155;
             --tag-bg: #334155;
@@ -49,10 +51,23 @@
             --timeline-dot-border: #1e293b;
         }
 
+        /* Custom text classes */
+        .text-primary {
+            color: var(--text-color);
+        }
+        .text-secondary {
+            color: var(--text-color-secondary);
+        }
+        .text-muted {
+            color: var(--text-color-muted);
+        }
+
         /* Styles for light mode */
         html.light {
             --bg-color: #f1f5f9;
             --text-color: #111827;
+            --text-color-secondary: #1f2937;
+            --text-color-muted: #374151;
             --card-bg: #ffffff;
             --border-color: #cbd5e1;
             --tag-bg: #e2e8f0;
@@ -207,14 +222,14 @@
     <!-- Header -->
     <header class="fixed w-full backdrop-blur-sm z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-300">
-            <a href="#" class="text-2xl font-bold gradient-text">Sagar Biswas</a>
+            <a href="#" class="text-2xl font-bold gradient-text">MrSagarBiswas</a>
             <div class="hidden md:flex space-x-8 items-center">
-                <a href="#about" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">About</a>
-                <a href="#projects" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">Projects</a>
-                <a href="#skills" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">Skills</a>
-                <a href="#experience" class="text-black dark:text-slate-300 hover:text-sky-500 transition-colors">Experience</a>
+                <a href="#about" class="text-primary hover:text-sky-500 transition-colors">About</a>
+                <a href="#projects" class="text-primary hover:text-sky-500 transition-colors">Projects</a>
+                <a href="#skills" class="text-primary hover:text-sky-500 transition-colors">Skills</a>
+                <a href="#experience" class="text-primary hover:text-sky-500 transition-colors">Experience</a>
                 <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg transition-all">Contact</a>
-                <button id="theme-toggle" class="text-black dark:text-slate-300 hover:text-sky-500 text-xl">
+                <button id="theme-toggle" class="text-primary hover:text-sky-500 text-xl">
                     <i class="fas fa-sun"></i>
                 </button>
             </div>
@@ -224,12 +239,12 @@
         </nav>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#about" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">About</a>
-            <a href="#projects" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">Projects</a>
-            <a href="#skills" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">Skills</a>
-            <a href="#experience" class="block py-2 text-black dark:text-slate-300 hover:text-sky-500">Experience</a>
+            <a href="#about" class="block py-2 text-primary hover:text-sky-500">About</a>
+            <a href="#projects" class="block py-2 text-primary hover:text-sky-500">Projects</a>
+            <a href="#skills" class="block py-2 text-primary hover:text-sky-500">Skills</a>
+            <a href="#experience" class="block py-2 text-primary hover:text-sky-500">Experience</a>
             <a href="#contact" class="block mt-2 bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg text-center">Contact</a>
-            <button id="mobile-theme-toggle" class="w-full mt-2 py-2 text-black dark:text-slate-300 hover:text-sky-500 text-xl rounded-lg bg-slate-200 dark:bg-slate-700">
+            <button id="mobile-theme-toggle" class="w-full mt-2 py-2 text-primary hover:text-sky-500 text-xl rounded-lg bg-slate-200 dark:bg-slate-700">
                 Toggle Theme
             </button>
         </div>
@@ -242,15 +257,15 @@
                 <h1 class="text-5xl md:text-7xl font-extrabold mb-4">
                     Hi, I'm <span class="gradient-text">Sagar Biswas</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-gray-900 dark:text-slate-400 mb-8 font-semibold">
+                <p class="text-xl md:text-2xl text-secondary mb-8 font-semibold">
                     A Computer Science Engineer from West Bengal, India, specializing in high-performance computing, distributed systems, and full-stack web development. I am currently pursuing my M.Tech in CSE at IIT Madras, where I am deepening my expertise in scalable and performance-driven computing systems.
                 </p>
                 <div class="flex justify-center space-x-6 mb-8">
-                    <a href="https://www.linkedin.com/in/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-github"></i></a>
-                    <a href="https://www.instagram.com/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-instagram"></i></a>
-                    <a href="https://leetcode.com/MrSagarBiswas" target="_blank" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fas fa-code"></i></a>
-                    <a href="mailto:biswassagar927@gmail.com" class="text-gray-800 dark:text-slate-400 hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fas fa-envelope"></i></a>
+                    <a href="https://www.linkedin.com/in/MrSagarBiswas" target="_blank" class="text-secondary hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/MrSagarBiswas" target="_blank" class="text-secondary hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/MrSagarBiswas" target="_blank" class="text-secondary hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fab fa-instagram"></i></a>
+                    <a href="https://leetcode.com/MrSagarBiswas" target="_blank" class="text-secondary hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fas fa-code"></i></a>
+                    <a href="mailto:biswassagar927@gmail.com" class="text-secondary hover:text-sky-500 transition-transform duration-300 hover:scale-125 text-3xl font-semibold"><i class="fas fa-envelope"></i></a>
                 </div>
                  <a href="https://drive.google.com/file/d/10od5VyA81sR64MRicabrMFgKKsCVIFbs/view?usp=sharing" target="_blank" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20">
                     View My Resume
@@ -266,23 +281,23 @@
                      <img src="sagar_biswas.png" alt="Sagar Biswas" class="rounded-full mx-auto shadow-lg w-64 h-64 md:w-80 md:h-80 object-cover border-4 border-sky-500/50">
                 </div>
                 <div class="md:col-span-3">
-                    <p class="text-lg text-gray-900 dark:text-slate-400 mb-6 font-semibold">
+                    <p class="text-lg text-secondary mb-6 font-semibold">
                         I am a passionate and driven Computer Science & Engineering Student from IIT Madras. My primary interests lie in building robust, scalable systems, from multicore runtime environments to decentralized applications. I have a strong foundation in algorithms, data structures, and parallel programming, with hands-on experience in GPU acceleration using CUDA.
                     </p>
-                    <p class="text-lg text-gray-900 dark:text-slate-400 font-semibold">
+                    <p class="text-lg text-secondary font-semibold">
                         Beyond systems programming, I'm also a proficient full-stack developer, having built complete web applications like an E-Health Management System using the MERN stack. I thrive on solving complex problems and am always eager to learn and apply new technologies.
                     </p>
                     <div class="mt-8">
-                        <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-slate-200">Education</h3>
+                        <h3 class="text-2xl font-bold mb-4 text-primary">Education</h3>
                         <div class="space-y-4">
                             <div class="card p-4 rounded-lg">
                                 <p class="font-bold text-sky-700 dark:text-sky-400">M.Tech in Computer Science & Engineering</p>
-                                <p class="text-gray-800 dark:text-slate-300">Indian Institute of Technology, Madras</p>
+                                <p class="text-secondary">Indian Institute of Technology, Madras</p>
                                 <p class="text-sm text-gray-700 dark:text-slate-400">2024 – 2026 | CGPA: 8.4</p>
                             </div>
                             <div class="card p-4 rounded-lg">
                                 <p class="font-bold text-sky-700 dark:text-sky-400">B.Tech in Computer Science & Engineering</p>
-                                <p class="text-gray-800 dark:text-slate-300">University of Allahabad</p>
+                                <p class="text-secondary">University of Allahabad</p>
                                 <p class="text-sm text-gray-700 dark:text-slate-400">2020 – 2024 | CGPA: 8.5</p>
                             </div>
                         </div>
@@ -298,37 +313,37 @@
                 <!-- Project Cards -->
                 <div class="card rounded-lg p-6 flex flex-col">
                     <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">Multicore Garbage Collector</h3>
-                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Designing a high-performance runtime subsystem to automatically reclaim memory and resource leaks in concurrent OCaml programs.</p>
+                    <p class="text-secondary flex-grow">Designing a high-performance runtime subsystem to automatically reclaim memory and resource leaks in concurrent OCaml programs.</p>
                     <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">C</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">OCaml</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Runtime Systems</span></div>
                     <a href="#" target="_blank" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
                 </div>
                 <div class="card rounded-lg p-6 flex flex-col">
                     <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">E-Health Management System</h3>
-                    <p class="text-slate-600 dark:text-slate-400 flex-grow">An end-to-end platform for patient onboarding, appointment booking, billing, and medical record access.</p>
+                    <p class="text-secondary flex-grow">An end-to-end platform for patient onboarding, appointment booking, billing, and medical record access.</p>
                     <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">ReactJS</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">NodeJS</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">MongoDB</span></div>
                      <a href="https://e-health-management-system.netlify.app/" target="_blank" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">Live Website &rarr;</a>
                 </div>
                 <div class="card rounded-lg p-6 flex flex-col">
                     <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">GPU-Accelerated Image Processing</h3>
-                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Designed multi-channel image transformation kernels in CUDA, achieving a 16x speedup over a sequential CPU implementation.</p>
+                    <p class="text-secondary flex-grow">Designed multi-channel image transformation kernels in CUDA, achieving a 16x speedup over a sequential CPU implementation.</p>
                     <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">CUDA</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">GPU Programming</span></div>
                      <a href="https://github.com/MrSagarBiswas/2D-Convolution-using-CUDA" target="_blank" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
                 </div>
                 <div class="card rounded-lg p-6 flex flex-col">
                     <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">Parallel MST using CUDA</h3>
-                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Implemented a parallel Minimum Spanning Tree algorithm based on Boruvka's approach, achieving a 12x speedup.</p>
+                    <p class="text-secondary flex-grow">Implemented a parallel Minimum Spanning Tree algorithm based on Boruvka's approach, achieving a 12x speedup.</p>
                     <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">CUDA</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Algorithms</span></div>
                      <a href="https://github.com/MrSagarBiswas/Parallel-Minimum-Spanning-Tree-using-CUDA" target="_blank" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
                 </div>
                 <div class="card rounded-lg p-6 flex flex-col">
                     <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">Decentralized Petitioning System</h3>
-                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Architected a decentralized petitioning and polling platform on Hedera Hashgraph using Solidity smart contracts.</p>
+                    <p class="text-secondary flex-grow">Architected a decentralized petitioning and polling platform on Hedera Hashgraph using Solidity smart contracts.</p>
                     <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Solidity</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Blockchain</span></div>
                      <a href="https://petition-polling-dapp.netlify.app/" target="_blank" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">Live Website &rarr;</a>
                 </div>
                 <div class="card rounded-lg p-6 flex flex-col">
                     <h3 class="text-xl font-bold mb-2 text-sky-500 dark:text-sky-400">iNaturalist Image Classification</h3>
-                    <p class="text-slate-600 dark:text-slate-400 flex-grow">Fine-tuned a ResNet50 model, achieving 87.9% test accuracy using transfer learning and advanced training techniques.</p>
+                    <p class="text-secondary flex-grow">Fine-tuned a ResNet50 model, achieving 87.9% test accuracy using transfer learning and advanced training techniques.</p>
                     <div class="mt-4 flex flex-wrap gap-2"><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">Deep Learning</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">PyTorch</span><span class="tag text-xs font-medium px-2.5 py-1 rounded-full">CNN</span></div>
                      <a href="https://github.com/MrSagarBiswas/CNN-on-iNaturalist-12K" target="_blank" class="mt-4 text-sky-500 dark:text-sky-400 font-semibold">View Details &rarr;</a>
                 </div>
@@ -340,7 +355,7 @@
             <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Technical Skills</h2>
             <div class="max-w-4xl mx-auto">
                 <div class="mb-8">
-                    <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200">Programming</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-primary">Programming</h3>
                     <div class="flex flex-wrap gap-4">
                         <span class="tag text-lg font-medium px-4 py-2 rounded-lg">C</span>
                         <span class="tag text-lg font-medium px-4 py-2 rounded-lg">C++</span>
@@ -352,7 +367,7 @@
                     </div>
                 </div>
                 <div class="mb-8">
-                    <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200">Libraries/Frameworks</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-primary">Libraries/Frameworks</h3>
                     <div class="flex flex-wrap gap-4">
                         <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Pandas</span>
                         <span class="tag text-lg font-medium px-4 py-2 rounded-lg">NumPy</span>
@@ -362,7 +377,7 @@
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200">Tools</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-primary">Tools</h3>
                     <div class="flex flex-wrap gap-4">
                         <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Git</span>
                         <span class="tag text-lg font-medium px-4 py-2 rounded-lg">Google Colab</span>
@@ -381,30 +396,30 @@
                      <div class="relative">
                         <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
                         <p class="text-sm text-sky-500 dark:text-sky-400">July 2025 - Nov 2025</p>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Teaching Assistant</h3>
-                        <p class="text-md text-slate-600 dark:text-slate-400">IIT Madras</p>
-                        <p class="mt-2 text-slate-600 dark:text-slate-400">Teaching Assistant for Paradigms of Programming (CS3100)</p>
+                        <h3 class="text-xl font-bold text-primary">Teaching Assistant</h3>
+                        <p class="text-md text-secondary">IIT Madras</p>
+                        <p class="mt-2 text-secondary">Teaching Assistant for Paradigms of Programming (CS3100)</p>
                     </div>
                     <div class="relative">
                         <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
                         <p class="text-sm text-sky-500 dark:text-sky-400">Jan 2025 - May 2025</p>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Teaching Assistant</h3>
-                        <p class="text-md text-slate-600 dark:text-slate-400">IIT Madras</p>
-                        <p class="mt-2 text-slate-600 dark:text-slate-400">Teaching Assistant for Introduction to Programming Lab (CS1100)</p>
+                        <h3 class="text-xl font-bold text-primary">Teaching Assistant</h3>
+                        <p class="text-md text-secondary">IIT Madras</p>
+                        <p class="mt-2 text-secondary">Teaching Assistant for Introduction to Programming Lab (CS1100)</p>
                     </div>
                     <div class="relative">
                         <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
                         <p class="text-sm text-sky-500 dark:text-sky-400">July 2024 - Nov 2024</p>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Teaching Assistant</h3>
-                        <p class="text-md text-slate-600 dark:text-slate-400">IIT Madras</p>
-                        <p class="mt-2 text-slate-600 dark:text-slate-400">Teaching Assistant for Programming and Data Structures Lab (CS2710)</p>
+                        <h3 class="text-xl font-bold text-primary">Teaching Assistant</h3>
+                        <p class="text-md text-secondary">IIT Madras</p>
+                        <p class="mt-2 text-secondary">Teaching Assistant for Programming and Data Structures Lab (CS2710)</p>
                     </div>
                     <div class="relative">
                         <div class="absolute -left-12 top-1 w-6 h-6 bg-sky-500 rounded-full border-4 timeline-dot"></div>
                         <p class="text-sm text-sky-500 dark:text-sky-400">May 2022 - Jan 2024</p>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Club Head at E-Code</h3>
-                        <p class="text-md text-slate-600 dark:text-slate-400">University of Allahabad</p>
-                        <p class="mt-2 text-slate-600 dark:text-slate-400">Organized programming competitions and weekly coding sessions, mentoring over 200 students in DSA.</p>
+                        <h3 class="text-xl font-bold text-primary">Club Head at E-Code</h3>
+                        <p class="text-md text-secondary">University of Allahabad</p>
+                        <p class="mt-2 text-secondary">Organized programming competitions and weekly coding sessions, mentoring over 200 students in DSA.</p>
                     </div>
                 </div>
             </div>
@@ -413,7 +428,7 @@
         <!-- Contact -->
         <section id="contact" class="py-20 text-center">
             <h2 class="text-4xl font-bold mb-4 gradient-text">Get In Touch</h2>
-            <p class="max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-400 mb-8">
+            <p class="max-w-2xl mx-auto text-lg text-secondary mb-8">
                 I'm currently seeking opportunities where I can contribute and grow. If you have a project in mind, want to connect, or just want to say hi, feel free to reach out!
             </p>
             <a href="mailto:biswassagar927@gmail.com" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/30">
